@@ -22,4 +22,9 @@
 .jar {
   height: 50px;
   margin-left: 80px;
+  position: static;
+}
+
+.hide {
+  display: none;
 }
