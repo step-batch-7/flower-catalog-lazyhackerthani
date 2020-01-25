@@ -2,17 +2,21 @@
  ✔︎ repository
  ✔︎ index.html
  ✔︎ images directory contains all flower images
- ->discriptions directory has discription of flower in different file
+ ✔︎discriptions directory has discription of flower in different file
  ✔︎public directory
   ✔︎ styles directory which has all styling
   ✔︎scripts directory contains client side scripts
- ->templates directory contain flower disciption page template
+ ✔︎templates directory contain flower disciption page template
  ✔︎ lib directory with mimeTypes,request,response
 ✔︎ static Index.html
  ✔︎ add heading,image,link without file,gif,line
 ✔︎server.js
   #which create server
-*app.js
+✔︎app.js
  #which handle server
   ✔︎process request
   ✔︎serveFile
+✔︎ add link to flower pages and guest book
+*add message box in guest book
+*display message in reverse order
+*clean design of html pages
