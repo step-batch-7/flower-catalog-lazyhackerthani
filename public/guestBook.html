@@ -10,6 +10,15 @@
   </head>
   <body>
     <h3 class="heading"><a href="index.html"><<</a> Guest Book</h3>
+    <h5 class="subHeading">Leave a comment</h5>
+    <form action="guestBook.html" method="POST">
+      Name: <input type="text" name="name" /><br />
+      Comment: <textarea name="comment" id="" cols="30" rows="10"></textarea>
+      <br />
+      <input type="submit" />
+    </form>
+    <hr width="90%" />
+    <iframe frameborder="2" class="allComments" src="messages.html"></iframe>
     <hr width="90%" />
   </body>
 </html>

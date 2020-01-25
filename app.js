@@ -38,6 +38,13 @@ const giveFlowerPage = req => {
   return generateFlowerFile({ flowerName, description });
 };
 
+const addComment = function(message) {
+  const commentText = `<br>${message.name} : ${message.comment}<br>`;
+  fs.appendFileSync('./public/messages.html', commentText, 'utf8');
+
+  return 0;
+};
+
 const findHandler = req => {
   if (req.method === 'GET' && req.url === '/') {
     req.url += 'index.html';
@@ -49,6 +56,10 @@ const findHandler = req => {
   )
     return giveFlowerPage;
   if (req.method === 'GET') return serveFile;
+  if (req.method === 'POST') {
+    addComment(req.body);
+    return serveFile;
+  }
   return () => new Response();
 };
 

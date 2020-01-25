@@ -17,6 +17,7 @@
   ✔︎process request
   ✔︎serveFile
 ✔︎ add link to flower pages and guest book
-*add message box in guest book
+✔︎add message box in guest book
+✔︎display old messages
 *display message in reverse order
 *clean design of html pages
