@@ -30,7 +30,12 @@ const generateFlowerFile = flowerDetails => {
 };
 
 const giveFlowerPage = req => {
-  return generateFlowerFile({ flowerName: 'Abeliophyllum' });
+  const flowerName = 'Abeliophyllum';
+  const description = fs.readFileSync(
+    `${STATIC_FOLDER}/documents/${flowerName}.txt`,
+    'utf8'
+  );
+  return generateFlowerFile({ flowerName, description });
 };
 
 const findHandler = req => {
