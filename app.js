@@ -30,7 +30,7 @@ const generateFlowerFile = flowerDetails => {
 };
 
 const giveFlowerPage = req => {
-  const flowerName = 'Abeliophyllum';
+  const flowerName = `${req.url.slice(1)}`;
   const description = fs.readFileSync(
     `${STATIC_FOLDER}/documents/${flowerName}.txt`,
     'utf8'
@@ -43,7 +43,11 @@ const findHandler = req => {
     req.url += 'index.html';
     return serveFile;
   }
-  if (req.method === 'GET' && req.url === '/flower1') return giveFlowerPage;
+  if (
+    req.method === 'GET' &&
+    (req.url === '/Abeliophyllum' || req.url === '/Agerantum')
+  )
+    return giveFlowerPage;
   if (req.method === 'GET') return serveFile;
   return () => new Response();
 };
