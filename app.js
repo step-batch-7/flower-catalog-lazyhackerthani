@@ -39,21 +39,30 @@ const giveFlowerPage = req => {
   return generateFlowerFile({ flowerName, description });
 };
 
-const addComment = function(message) {
-  const name = message.name;
-  const comment = message.comment;
-  const commentDetails = { name: name, comment: comment, time: new Date() };
-  oldComments.push(commentDetails);
-  fs.appendFileSync(
-    './public/messages.html',
-    `<br> ${name} ( ${commentDetails.time} ) : ${comment}<br>`,
-    'utf8'
-  );
+const generateGuestBook = allComments => {
+  const html = loadTemplate('guestBook.html', allComments);
+  const res = new Response();
+  res.setHeader('Content-Type', CONTENT_TYPES.html);
+  res.setHeader('Content-Length', html.length);
+  res.statusCode = 200;
+  res.body = html;
+  return res;
+};
+
+const giveGuestBook = ({ body }) => {
+  const commentDetails = {
+    name: body.name,
+    comment: body.comment,
+    time: new Date()
+  };
+  oldComments.shift(commentDetails);
   fs.writeFileSync(
     './public/documents/comments.json',
     JSON.stringify(oldComments),
     'utf8'
   );
+  const commentHtml = `<br> ${body.name} ( ${commentDetails.time} ) : ${body.comment}<br>`;
+  return generateGuestBook({ comment: commentHtml });
 };
 
 const findHandler = req => {
@@ -66,10 +75,11 @@ const findHandler = req => {
     (req.url === '/Abeliophyllum' || req.url === '/Agerantum')
   )
     return giveFlowerPage;
+  if (req.method === 'GET' && req.url === '/guestBook.html')
+    return giveGuestBook;
   if (req.method === 'GET') return serveFile;
   if (req.method === 'POST') {
-    addComment(req.body);
-    return serveFile;
+    return giveGuestBook;
   }
   return () => new Response();
 };
