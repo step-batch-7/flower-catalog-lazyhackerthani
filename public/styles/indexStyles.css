@@ -2,25 +2,26 @@
   text-align: right;
   color: orange;
   font-weight: 200;
-  font-size: 20px;
+  font-size: 35px;
   margin-right: 50px;
 }
 
 .flowerBundle {
-  height: 250px;
+  margin-left: 5%;
+  height: 600px;
   width: auto;
 }
 
 .inlineElements {
   display: flex;
-  font-size: 10px;
+  font-size: 20px;
 }
 
 .linkList {
   margin-top: 50px;
 }
 .jar {
-  height: 50px;
+  height: 90px;
   margin-left: 80px;
   position: static;
 }
