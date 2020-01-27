@@ -24,18 +24,14 @@ const serveFile = req => {
   return generateResponse(contentType, content, 200);
 };
 
-const generateFile = function(templateFileName, propertyBag) {
-  const html = loadTemplate(templateFileName, propertyBag);
-  return generateResponse(CONTENT_TYPES.html, html, 200);
-};
-
 const giveFlowerPage = req => {
   const flowerName = `${req.url.slice(1)}`;
   const description = fs.readFileSync(
     `${STATIC_FOLDER}/documents/${flowerName}.txt`,
     'utf8'
   );
-  return generateFile('flower.html', { flowerName, description });
+  const content = loadTemplate('flower.html', { flowerName, description });
+  return generateResponse(CONTENT_TYPES.html, content, 200);
 };
 
 const giveGuestBook = ({ body }) => {
@@ -59,7 +55,8 @@ const giveGuestBook = ({ body }) => {
       commentDetail.time
     )} ) : ${commentDetail.comment}<br><div>`;
   });
-  return generateFile('guestBook.html', { comment: html });
+  const content = loadTemplate('guestBook.html', { comment: html });
+  return generateResponse(CONTENT_TYPES.html, content, 200);
 };
 
 const findHandler = req => {
