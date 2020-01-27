@@ -5,6 +5,15 @@ const { loadTemplate } = require('./lib/viewTemplate');
 const CONTENT_TYPES = require('./lib/mimeTypes');
 const STATIC_FOLDER = `${__dirname}/public`;
 
+const generateResponse = (contentType, content, statusCode) => {
+  const res = new Response();
+  res.setHeader('Content-Type', contentType);
+  res.setHeader('Content-Length', content.length);
+  res.statusCode = statusCode;
+  res.body = content;
+  return res;
+};
+
 const serveFile = req => {
   const path = `${STATIC_FOLDER}${req.url}`;
   const stat = fs.existsSync(path) && fs.statSync(path);
@@ -12,22 +21,12 @@ const serveFile = req => {
   const [, extension] = path.match(/.*\.(.*)$/) || [];
   const contentType = CONTENT_TYPES[extension];
   const content = fs.readFileSync(path);
-  const res = new Response();
-  res.setHeader('Content-Type', contentType);
-  res.setHeader('Content-Length', content.length);
-  res.statusCode = 200;
-  res.body = content;
-  return res;
+  return generateResponse(contentType, content, 200);
 };
 
 const generateFile = function(templateFileName, propertyBag) {
   const html = loadTemplate(templateFileName, propertyBag);
-  const res = new Response();
-  res.setHeader('Content-Type', CONTENT_TYPES.html);
-  res.setHeader('Content-Length', html.length);
-  res.statusCode = 200;
-  res.body = html;
-  return res;
+  return generateResponse(CONTENT_TYPES.html, html, 200);
 };
 
 const giveFlowerPage = req => {
