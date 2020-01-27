@@ -1,6 +1,7 @@
 const fs = require('fs');
 const Response = require('./lib/response');
 const { loadTemplate } = require('./lib/viewTemplate');
+const { replaceText } = require('./lib/encode.js');
 const CONTENT_TYPES = require('./lib/mimeTypes');
 const STATIC_FOLDER = `${__dirname}/public`;
 
@@ -39,7 +40,9 @@ const giveFlowerPage = req => {
 };
 
 const addComment = function(message) {
-  const commentText = `<br>${message.name} : ${message.comment}<br>`;
+  const name = replaceText(message.name);
+  const comment = replaceText(message.comment);
+  const commentText = `<br>${name} : ${comment}<br>`;
   fs.appendFileSync('./public/messages.html', commentText, 'utf8');
 
   return 0;
