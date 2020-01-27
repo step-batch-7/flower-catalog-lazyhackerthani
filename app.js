@@ -73,12 +73,12 @@ const findHandler = req => {
     (req.url === '/Abeliophyllum' || req.url === '/Agerantum')
   )
     return giveFlowerPage;
-  if (req.method === 'GET' && req.url === '/guestBook.html')
+  if (
+    (req.method === 'GET' || req.method === 'POST') &&
+    req.url === '/guestBook.html'
+  )
     return giveGuestBook;
   if (req.method === 'GET') return serveFile;
-  if (req.method === 'POST') {
-    return giveGuestBook;
-  }
   return () => new Response();
 };
 
