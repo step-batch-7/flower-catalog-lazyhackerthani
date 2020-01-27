@@ -6,11 +6,9 @@ const CONTENT_TYPES = require('./lib/mimeTypes');
 const STATIC_FOLDER = `${__dirname}/public`;
 
 const generateResponse = (contentType, content, statusCode) => {
-  const res = new Response();
+  const res = new Response(statusCode, content);
   res.setHeader('Content-Type', contentType);
   res.setHeader('Content-Length', content.length);
-  res.statusCode = statusCode;
-  res.body = content;
   return res;
 };
 
