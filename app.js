@@ -55,14 +55,22 @@ const giveGuestBook = ({ body }) => {
     comment: body.comment,
     time: new Date()
   };
-  oldComments.shift(commentDetails);
+  if (body.comment) {
+    oldComments.unshift(commentDetails);
+  }
+
   fs.writeFileSync(
     './public/documents/comments.json',
     JSON.stringify(oldComments),
     'utf8'
   );
-  const commentHtml = `<br> ${body.name} ( ${commentDetails.time} ) : ${body.comment}<br>`;
-  return generateGuestBook({ comment: commentHtml });
+  let html = '';
+  oldComments.forEach(commentDetail => {
+    html += `<div><br> ${commentDetail.name} ( ${Date(
+      commentDetail.time
+    )} ) : ${commentDetail.comment}<br><div>`;
+  });
+  return generateGuestBook({ comment: html });
 };
 
 const findHandler = req => {
