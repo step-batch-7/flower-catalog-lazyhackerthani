@@ -1,5 +1,6 @@
 const fs = require('fs');
 const Response = require('./lib/response');
+const oldComments = require('./public/documents/comments.json');
 const { loadTemplate } = require('./lib/viewTemplate');
 const { replaceText } = require('./lib/encode.js');
 const CONTENT_TYPES = require('./lib/mimeTypes');
@@ -42,10 +43,18 @@ const giveFlowerPage = req => {
 const addComment = function(message) {
   const name = replaceText(message.name);
   const comment = replaceText(message.comment);
-  const commentText = `<br>${name} : ${comment}<br>`;
-  fs.appendFileSync('./public/messages.html', commentText, 'utf8');
-
-  return 0;
+  const commentDetails = { name: name, comment: comment, time: new Date() };
+  oldComments.push(commentDetails);
+  fs.appendFileSync(
+    './public/messages.html',
+    `${name}(${commentDetails.time}): ${comment}`,
+    'utf8'
+  );
+  fs.writeFileSync(
+    './public/documents/comments.json',
+    JSON.stringify(oldComments),
+    'utf8'
+  );
 };
 
 const findHandler = req => {
