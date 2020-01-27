@@ -11,6 +11,10 @@
   width: auto;
 }
 
+.flowerDetails {
+  padding: 40px;
+}
+
 .inlineElements {
   display: flex;
   font-size: 20px;
