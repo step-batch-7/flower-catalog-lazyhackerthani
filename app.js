@@ -20,8 +20,8 @@ const serveFile = req => {
   return res;
 };
 
-const generateFlowerFile = flowerDetails => {
-  const html = loadTemplate('flower.html', flowerDetails);
+const generateFile = function(templateFileName, propertyBag) {
+  const html = loadTemplate(templateFileName, propertyBag);
   const res = new Response();
   res.setHeader('Content-Type', CONTENT_TYPES.html);
   res.setHeader('Content-Length', html.length);
@@ -36,17 +36,7 @@ const giveFlowerPage = req => {
     `${STATIC_FOLDER}/documents/${flowerName}.txt`,
     'utf8'
   );
-  return generateFlowerFile({ flowerName, description });
-};
-
-const generateGuestBook = allComments => {
-  const html = loadTemplate('guestBook.html', allComments);
-  const res = new Response();
-  res.setHeader('Content-Type', CONTENT_TYPES.html);
-  res.setHeader('Content-Length', html.length);
-  res.statusCode = 200;
-  res.body = html;
-  return res;
+  return generateFile('flower.html', { flowerName, description });
 };
 
 const giveGuestBook = ({ body }) => {
@@ -70,7 +60,7 @@ const giveGuestBook = ({ body }) => {
       commentDetail.time
     )} ) : ${commentDetail.comment}<br><div>`;
   });
-  return generateGuestBook({ comment: html });
+  return generateFile('guestBook.html', { comment: html });
 };
 
 const findHandler = req => {
