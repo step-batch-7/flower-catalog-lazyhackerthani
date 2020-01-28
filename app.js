@@ -49,9 +49,9 @@ const giveGuestBook = ({ body }) => {
   );
   let html = '';
   oldComments.forEach(commentDetail => {
-    html += `<div><br> ${commentDetail.name} ( ${Date(
+    html += `<div class="commentBox"> ${commentDetail.name} ( ${new Date(
       commentDetail.time
-    )} ) : ${commentDetail.comment}<br><div>`;
+    )} ) : ${commentDetail.comment}</div>`;
   });
   const content = loadTemplate('guestBook.html', { comment: html });
   return generateResponse(CONTENT_TYPES.html, content, 200);
