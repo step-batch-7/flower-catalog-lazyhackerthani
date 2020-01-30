@@ -53,7 +53,7 @@ const giveFlowerPage = (req, res, next) => {
 };
 
 const giveGuestBook = function(req, res, next) {
-  if (req.url === 'guestBook') {
+  if (!req.url === 'guestBook') {
     next();
     return;
   }
