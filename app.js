@@ -4,6 +4,7 @@ const oldComments = require('./public/documents/comments.json');
 const { loadTemplate } = require('./lib/viewTemplate');
 const CONTENT_TYPES = require('./lib/mimeTypes');
 const STATIC_FOLDER = `${__dirname}/public`;
+const successCode = 200;
 
 const generateResponse = (contentType, content, statusCode) => {
   const res = new Response(statusCode, content);
@@ -12,14 +13,16 @@ const generateResponse = (contentType, content, statusCode) => {
   return res;
 };
 
-const serveFile = req => {
+const serveFile = function(req) {
   const path = `${STATIC_FOLDER}${req.url}`;
   const stat = fs.existsSync(path) && fs.statSync(path);
-  if (!stat || !stat.isFile()) return new Response();
+  if (!stat || !stat.isFile()) {
+    return new Response();
+  }
   const [, extension] = path.match(/.*\.(.*)$/) || [];
   const contentType = CONTENT_TYPES[extension];
   const content = fs.readFileSync(path);
-  return generateResponse(contentType, content, 200);
+  return generateResponse(contentType, content, successCode);
 };
 
 const giveFlowerPage = req => {
@@ -29,7 +32,7 @@ const giveFlowerPage = req => {
     'utf8'
   );
   const content = loadTemplate('flower.html', { flowerName, description });
-  return generateResponse(CONTENT_TYPES.html, content, 200);
+  return generateResponse(CONTENT_TYPES.html, content, successCode);
 };
 
 const giveGuestBook = ({ body }) => {
@@ -54,10 +57,10 @@ const giveGuestBook = ({ body }) => {
     )} ) : ${commentDetail.comment}</div>`;
   });
   const content = loadTemplate('guestBook.html', { comment: html });
-  return generateResponse(CONTENT_TYPES.html, content, 200);
+  return generateResponse(CONTENT_TYPES.html, content, successCode);
 };
 
-const findHandler = req => {
+const findHandler = function(req) {
   if (req.method === 'GET' && req.url === '/') {
     req.url += 'index.html';
     return serveFile;
@@ -65,14 +68,18 @@ const findHandler = req => {
   if (
     req.method === 'GET' &&
     (req.url === '/Abeliophyllum' || req.url === '/Agerantum')
-  )
+  ) {
     return giveFlowerPage;
+  }
   if (
     (req.method === 'GET' || req.method === 'POST') &&
-    req.url === '/guestBook.html'
-  )
+    req.url === '/guestBook'
+  ) {
     return giveGuestBook;
-  if (req.method === 'GET') return serveFile;
+  }
+  if (req.method === 'GET') {
+    return serveFile;
+  }
   return () => new Response();
 };
 

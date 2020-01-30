@@ -36,8 +36,13 @@ const notFound = function(req, res) {
 ////
 
 const giveFlowerPage = (req, res, next) => {
+  const flowerList = ['Abeliophyllum', 'Agerantum'];
   const documentFolder = `${__dirname}/public/documents`;
   const flowerName = `${req.url.slice(1)}`;
+  if (!flowerList.some(allowedFlower => flowerName === allowedFlower)) {
+    next();
+    return;
+  }
   const description = fs.readFileSync(
     `${documentFolder}/${flowerName}.txt`,
     'utf8'
@@ -114,8 +119,8 @@ app.use(readBody);
 
 app.get('', serveStaticPage);
 
-app.get('Abeliophyllum', giveFlowerPage);
-app.get('Agerantum', giveFlowerPage);
+app.get('', giveFlowerPage);
+
 app.get('guestBook', giveGuestBook);
 app.post('guestBook', addComment);
 

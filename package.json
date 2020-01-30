@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/step-batch-7/flower-catalog-lazyhackerthani/issues"
   },
-  "homepage": "https://github.com/step-batch-7/flower-catalog-lazyhackerthani#readme"
+  "homepage": "https://github.com/step-batch-7/flower-catalog-lazyhackerthani#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0"
+  }
 }
