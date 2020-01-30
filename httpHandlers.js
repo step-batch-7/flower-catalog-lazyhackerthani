@@ -53,6 +53,10 @@ const giveFlowerPage = (req, res, next) => {
 };
 
 const giveGuestBook = function(req, res, next) {
+  if (req.url === 'guestBook') {
+    next();
+    return;
+  }
   const oldComments = JSON.parse(
     fs.readFileSync('./public/documents/comments.json', 'utf8')
   );
@@ -77,7 +81,7 @@ const pickupParams = (query, keyValue) => {
   return query;
 };
 
-const addComment = (req, res, next) => {
+const addComment = (req, res) => {
   const oldComments = JSON.parse(
     fs.readFileSync('./public/documents/comments.json', 'utf8')
   );
@@ -122,9 +126,9 @@ app.get('', serveStaticPage);
 app.get('', giveFlowerPage);
 
 app.get('guestBook', giveGuestBook);
-app.post('guestBook', addComment);
 
 app.get('', notFound);
+app.post('guestBook', addComment);
 app.post('', notFound);
 app.use(methodNotAllowed);
 
