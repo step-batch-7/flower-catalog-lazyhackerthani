@@ -110,7 +110,7 @@ const methodNotAllowed = function(req, res) {
 
 const readBody = function(req, res, next) {
   let data = '';
-  req.on('data', chunk => (data += chunk));
+  req.on('data', chunk => data += chunk);
   req.on('end', () => {
     req.body = data;
     next();
