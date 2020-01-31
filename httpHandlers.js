@@ -2,6 +2,7 @@ const fs = require('fs');
 
 const { App } = require('./httpApp');
 const { loadTemplate } = require('./lib/viewTemplate');
+const { StatementNote, CommentLog } = require('./lib/commentLog');
 
 const MIME_TYPES = {
   txt: 'text/plain',
@@ -13,6 +14,9 @@ const MIME_TYPES = {
   jpg: 'image/jpeg',
   pdf: 'application/pdf'
 };
+
+const COMMENT_STORE = './public/documents/comments.json';
+const comments = CommentLog.load(fs.readFileSync(COMMENT_STORE, 'utf8'));
 
 const serveStaticPage = function(req, res, next) {
   const publicFolder = `${__dirname}/public`;
@@ -30,6 +34,7 @@ const serveStaticPage = function(req, res, next) {
 };
 
 const notFound = function(req, res) {
+  res.setHeader('Content-Type', MIME_TYPES.html);
   res.writeHead(404);
   res.end('Not Found');
 };
@@ -53,7 +58,7 @@ const giveFlowerPage = (req, res, next) => {
 };
 
 const giveGuestBook = function(req, res, next) {
-  if (!req.url === 'guestBook') {
+  if (req.url !== '/guestBook') {
     next();
     return;
   }
@@ -82,27 +87,16 @@ const pickupParams = (query, keyValue) => {
 };
 
 const addComment = (req, res) => {
-  const oldComments = JSON.parse(
-    fs.readFileSync('./public/documents/comments.json', 'utf8')
-  );
   const body = req.body.split('&').reduce(pickupParams, {});
-  const commentDetails = {
-    name: body.name,
-    comment: body.comment,
-    time: new Date()
-  };
-  oldComments.unshift(commentDetails);
-  fs.writeFileSync(
-    './public/documents/comments.json',
-    JSON.stringify(oldComments),
-    'utf8'
-  );
-
-  res.setHeader('location', 'guestBook');
-  res.writeHead(301);
+  const comment = new StatementNote(body.name, body.comment, new Date());
+  comments.addComment(comment);
+  fs.writeFileSync(COMMENT_STORE, comments.toJSON());
+  res.writeHead(301, {
+    Location: '/guestBook'
+  });
   res.end();
 };
-////
+
 const methodNotAllowed = function(req, res) {
   res.writeHead(400, 'Method Not Allowed');
   res.end();
@@ -110,7 +104,7 @@ const methodNotAllowed = function(req, res) {
 
 const readBody = function(req, res, next) {
   let data = '';
-  req.on('data', chunk => data += chunk);
+  req.on('data', chunk => (data += chunk));
   req.on('end', () => {
     req.body = data;
     next();

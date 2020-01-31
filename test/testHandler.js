@@ -36,4 +36,20 @@ describe('GET method ', () => {
         .expect(/Guest Book/);
     });
   });
+  describe('not Found file', () => {
+    it('should give the not found page when the url is /guestBooks', done => {
+      request(app.serve.bind(app))
+        .get('/guestBooks')
+        .expect('Content-Type', 'text/html')
+        .expect(404, done)
+        .expect(/Not Found/);
+    });
+    it('should give the not found page when the url is /Abeliophyllum/ds', done => {
+      request(app.serve.bind(app))
+        .get('/Abeliophyllum/ds')
+        .expect('Content-Type', 'text/html')
+        .expect(404, done)
+        .expect(/Not Found/);
+    });
+  });
 });
