@@ -62,15 +62,9 @@ const giveGuestBook = function(req, res, next) {
     next();
     return;
   }
-  const oldComments = JSON.parse(
-    fs.readFileSync('./public/documents/comments.json', 'utf8')
-  );
   let html = '';
-  oldComments.forEach(commentDetail => {
-    html += `<div class="commentBox"> ${commentDetail.name} ( ${new Date(
-      commentDetail.time
-    )} ) : ${commentDetail.comment}</div>`;
-  });
+  html = comments.toHTML();
+
   const content = loadTemplate('guestBook.html', { comment: html });
   res.setHeader('Content-Type', MIME_TYPES.html);
   res.end(content);
