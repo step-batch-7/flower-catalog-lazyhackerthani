@@ -3,6 +3,7 @@ const fs = require('fs');
 const { App } = require('./httpApp');
 const { loadTemplate } = require('./lib/viewTemplate');
 const { StatementNote, CommentLog } = require('./lib/commentLog');
+const config = require('./config');
 
 const MIME_TYPES = {
   txt: 'text/plain',
@@ -12,10 +13,11 @@ const MIME_TYPES = {
   json: 'application/json',
   gif: 'image/gif',
   jpg: 'image/jpeg',
+  png: 'image/png',
   pdf: 'application/pdf'
 };
 
-const COMMENT_STORE = './public/documents/comments.json';
+const COMMENT_STORE = config.DATA_STORE;
 const comments = CommentLog.load(fs.readFileSync(COMMENT_STORE, 'utf8'));
 
 const serveStaticPage = function(req, res, next) {
