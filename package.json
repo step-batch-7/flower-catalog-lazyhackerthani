@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "export DATA_STORE=$(pwd)/public/documents/testComments.json; nyc mocha",
-    "start": "export DATA_STORE=$(pwd)/public/documents/comments.json; nodemon httpServer.js"
+    "test": "export DATA_STORE=$(pwd)/assets/testComments.json; nyc mocha",
+    "start": "export DATA_STORE=$(pwd)/assets/comments.json; nodemon httpServer.js"
   },
   "repository": {
     "type": "git",
