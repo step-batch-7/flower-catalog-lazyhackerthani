@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "export DATA_STORE=$(pwd)/assets/testComments.json; nyc mocha",
+    "test": "export DATA_STORE=$(pwd)/test/resources/testComments.json; nyc mocha",
     "start": "export DATA_STORE=$(pwd)/assets/comments.json; nodemon httpServer.js"
   },
   "repository": {

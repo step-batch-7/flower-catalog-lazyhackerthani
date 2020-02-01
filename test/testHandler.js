@@ -1,5 +1,8 @@
 const request = require('supertest');
 const { app } = require('../httpHandlers');
+const fs = require('fs');
+
+const config = require('../config');
 
 describe('GET method ', () => {
   describe('static file', () => {
@@ -51,5 +54,18 @@ describe('GET method ', () => {
         .expect(404, done)
         .expect(/Not Found/);
     });
+  });
+});
+
+describe('POST comment', () => {
+  it.only('should post the comment on the guestBookPage', done => {
+    request(app.serve.bind(app))
+      .post('/guestBook')
+      .send('name=Tom&comment=HeyJerry')
+      .expect('Location', '/guestBook')
+      .expect(301, done);
+  });
+  after(() => {
+    fs.truncateSync(config.DATA_STORE);
   });
 });
